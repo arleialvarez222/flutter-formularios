@@ -7,7 +7,7 @@ import 'package:formularios_app/ui/input_decoration.dart';
 import 'package:formularios_app/widgets/widgets.dart';
 
 
-class LoginScreen extends StatelessWidget {
+class RegistroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class LoginScreen extends StatelessWidget {
 
                     SizedBox(height: 10,),
 
-                    Text('Login', style: Theme.of(context).textTheme.headline4,),
+                    Text('Crear cuenta', style: Theme.of(context).textTheme.headline4,),
 
                     SizedBox(height: 30,),
 
@@ -41,12 +41,12 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 50,),
 
               TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, 'registro'),
+                onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
                 style: ButtonStyle(
                   overlayColor: MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder()),
                 ),
-                 child: Text('Crear nueva cuenta', style: TextStyle(fontSize: 18, color: Colors.black87),),
+                 child: Text('Ya tienes una cuenta', style: TextStyle(fontSize: 18, color: Colors.black87),),
               ),
 
               SizedBox(height: 50,),
@@ -130,23 +130,24 @@ class _LoginForm extends StatelessWidget {
               ),
               onPressed: loginForm.isLoading ? null : () async {
 
-                 FocusScope.of(context).unfocus();
+                FocusScope.of(context).unfocus();
                 final authService = Provider.of<AuthService>(context, listen: false);
 
                 if( !loginForm.isValidForm() ) return;
 
                 loginForm.isLoading = true;
 
-                final String? errorMessage =  await authService.login(loginForm.email, loginForm.password);
+                final String? errorMessage =  await authService.createUser(loginForm.email, loginForm.password);
 
                 if(errorMessage == null){
                    Navigator.pushReplacementNamed(context, 'home');
                 }else{
-                  //print(errorMessage);
-                  NotificationService.showSnackbar(errorMessage);
+                  print(errorMessage);
                   loginForm.isLoading = false;
                 }
 
+
+                //Navigator.pushReplacementNamed(context, 'home'); 
               
               }
             ),
